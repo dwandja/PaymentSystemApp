@@ -1,0 +1,81 @@
+//Server receives a request from client
+
+import java.net.*;
+import java.io.*;
+import java.util.*;
+import java.math.*;
+
+public class SimpleServer{
+
+   public static void main(String[] args) {
+
+	ServerSocket serverSocket;
+	Date date = new Date();
+	try {
+	       serverSocket = new ServerSocket( 8000 );
+	       System.out.println("How May I Serve You?"+" ("+date.toString()+")");
+           Socket socketConnection = serverSocket.accept();  
+           
+           DataOutputStream dosToClient = new DataOutputStream(socketConnection.getOutputStream() );
+           DataInputStream  disFromClient = new DataInputStream(socketConnection.getInputStream() );
+           
+           dosToClient.writeUTF("How May I Serve You?"+" ("+date.toString()+")");
+	     
+         try {
+                 while (true) {  // keep on getting data from the client
+                		 
+                	
+                	 String client_request=disFromClient.readUTF();
+                	 System.out.println("Client's request: "+client_request);
+                	 
+                
+                		 dosToClient.writeUTF("CHOOSE: circle, rectangle");
+                		 dosToClient.flush();
+
+                	 String result = disFromClient.readUTF();
+                	 System.out.println("client's request: "+ result);
+                	 String[] sp = result.split("\\s+");
+                	 
+                	 dosToClient.writeUTF("OK");
+                	 dosToClient.writeUTF("the "+sp[0]+"'s area: ");
+                	 
+                	 double x = Double.parseDouble(sp[1]);
+                	 double y = Double.parseDouble(sp[2]);
+                	 
+					 if(sp[0].equals("rectangle")){
+					 
+                	 dosToClient.writeDouble(x*y);
+                	}
+					
+				    if(sp[0].equals("circle")){
+					
+					 dosToClient.writeDouble( x*y*Math.PI);
+					 
+				 }
+					
+   	 
+	          	} // end while
+	     }
+         
+         catch( EOFException eof ) {  // loss of connection
+                                      System.out.println( "*** THE client has terminated connection ***" );
+                               }
+
+         catch(IOException e ) {  // I/O error in data exchange
+                                  System.out.println( "I/O error in data exchange" );
+				                  e.printStackTrace();    								}
+
+	     /* step 5: close the connection to the client
+              */
+	     dosToClient.close();
+	     disFromClient.close();
+         socketConnection.close();
+	 }
+	 catch(IOException e ) {     // I/O error in socket connection
+                                 System.out.println( "I/O error in socket connection" );
+                                 e.printStackTrace();     }
+
+     System.out.println( "*** the server is going to stop running! ***" );
+
+   } // end main
+}
