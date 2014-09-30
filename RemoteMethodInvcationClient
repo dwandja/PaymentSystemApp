@@ -1,0 +1,255 @@
+
+//Client sends a request to the server using RMI external functions
+
+import javax.swing.*;
+import java.net.*;
+import java.io.*;
+import java.util.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.sql.*;
+
+
+public class RMIClient extends JFrame {
+	
+	//Database Global
+	
+	private JTextArea  			_txtarea;
+	private JLabel      		_label;
+	private JButton ADD = 		new JButton("ADD");
+	private JButton DELETE =	new JButton("DELETE");
+	private JButton REPORT = 	new JButton("CreateReport");
+	private JButton CLEAR = 	new JButton("ClearReport");
+	private JRadioButton CONNECT, DISCONNECT;
+	private JTextField _tf1, _tf2, _tf3, _tf4;
+	private JLabel _l1, _l2, _l3, _l4, _l5;
+	private JPasswordField _pf;
+    private RMI rm;
+    private double x;
+    private double y;
+    private String cy;
+    private String cx;
+    private String cz;
+    private int count=0;
+    
+	
+	public RMIClient() throws RemoteException{
+		
+        super("Request Form");
+		buildGui();
+		RegisterListener();
+	  }
+		
+ 	public void buildGui(){
+		 
+ 		_tf1= new JTextField("root", 20);
+ 		_pf= new JPasswordField("xxxx", 20);
+ 		_pf.getPassword();
+ 		_pf.setEchoChar('#');
+ 		_tf2= new JTextField("",5);
+ 		_tf3= new JTextField("",5);
+ 		_tf4= new JTextField("",20);
+	    _txtarea= new JTextArea( "Please, click on Connect to connect to database!! \n",12,58);
+	    _l1 = new JLabel("Username");
+		_l2 = new JLabel("Password");
+		_l3 = new JLabel("X Coordinate");
+		_l4 = new JLabel("Y Coordinate");
+		_l5 = new JLabel("Address");
+	    
+		_label= new JLabel("Query");
+		CONNECT= new JRadioButton("CONNECT",false);
+		DISCONNECT= new JRadioButton("DISCONNECT",false);
+		
+		// create a button group to restrict one selection		
+		ButtonGroup bgroup =new ButtonGroup();
+		
+		bgroup.add(CONNECT); bgroup.add(DISCONNECT);
+		
+		JPanel jp1= new JPanel();
+		jp1.add(_l1);
+		jp1.add(_tf1);
+		jp1.add(_l2);
+		jp1.add(_pf);
+		jp1.add(CONNECT);
+		jp1.add(DISCONNECT);
+		
+		JPanel jp2= new JPanel();
+		jp2.add(_l3);
+		jp2.add(_tf2);
+		jp2.add(_l4);
+		jp2.add(_tf3);
+		jp2.add(_l5);
+		jp2.add(_tf4);
+		//jp2.add(_label);
+		//jp2.add(_txtarea);	
+		
+		JPanel jp3= new JPanel();
+		jp3.add(ADD);
+		jp3.add(DELETE);
+		jp3.add(REPORT);
+		jp3.add(CLEAR);
+		
+		Container c= getContentPane();
+		
+		c.setLayout( new FlowLayout());
+		c.add(jp1);
+		c.add(jp2);
+		c.add( new JScrollPane(_txtarea));
+		c.add(jp3);
+		setSize(800,400);
+		setVisible(true);
+		setDefaultCloseOperation( EXIT_ON_CLOSE );
+	}
+ 	
+ 		
+ 	public void RegisterListener() throws RemoteException{
+	
+ 		String url= "rmi://localhost:6666/";	
+ 		
+ 		try{
+		 String names[]= Naming.list("rmi://localhost:6666/" );	
+		
+		for(int k=0; k < names.length; k++)
+			System.out.println( "...... " + names[k] ); 
+
+		      rm = (RMI)Naming.lookup(url + "bj");		
+			
+		//Connect Button ActionListener
+		
+	      DELETE.addActionListener( new ActionListener()
+	      {
+	         public void actionPerformed(ActionEvent e) 
+	         {
+	        	   try {     
+	        		cx= _tf2.getText();
+	        		cy= _tf3.getText();
+	        		cz= _tf4.getText();
+	        		x= Double.parseDouble(cx);
+	        		y= Double.parseDouble(cy);
+					rm.delete(x,y,cz);
+				    _tf2.setText(" ");
+				    _tf3.setText(" ");
+					_tf4.setText(" ");
+					
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}         	 
+	         }
+	      });
+	            
+	      //Add Button ActionListener
+	      ADD.addActionListener( new ActionListener()
+	      {
+	    	 public void actionPerformed(ActionEvent e)
+	    	 {
+	    		 try {
+	    			cx= _tf2.getText();
+		        	cy= _tf3.getText();
+		        	cz= _tf4.getText();
+		        	x= 	Double.parseDouble(cx);
+		        	y= 	Double.parseDouble(cy);		 
+					rm.add(x,y,cz);
+					_txtarea.setText(x + " " + y + " "+ " "+ cz );
+					
+					_tf2.setText(" ");
+					_tf3.setText(" ");
+					_tf4.setText(" ");
+					
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+	    	 }
+	      });
+	      
+	      //REPORT Button ActionListener
+	      
+	       REPORT.addActionListener( new ActionListener()
+	      {
+	    	 public void actionPerformed(ActionEvent e)
+	    	 {
+	    		String[] sr ;
+				
+					try {
+						sr = rm.createReport();
+						
+						for( String str: sr ){
+							
+							if(str!=null) {
+					    
+						_txtarea.append(str);
+						_txtarea.append(".....................................................................");
+						count++;
+							}
+						}
+						
+						_txtarea.append("\n\t"+ count + " Rows recorded");
+						
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace(); }    		
+	    		
+	    	 }
+	      });
+	       
+	       //CLEAR Button ActionListener
+	       
+	       CLEAR.addActionListener( new ActionListener()
+		      {
+		    	 public void actionPerformed(ActionEvent e)
+		    	 {
+		    		_txtarea.setText(" ");
+		    		
+		    	 }
+		      });
+		              	      
+	      RadioHandler rh= new RadioHandler();
+	      CONNECT.addItemListener(rh);
+	      DISCONNECT.addItemListener(rh);
+	       
+	      
+ 	}catch( Exception e ) {
+		 System.out.println( "Error " + e );
+     }
+ 			 		
+   }
+ 	
+ 	   class RadioHandler implements ItemListener{
+ 		
+ 		
+ 		public void itemStateChanged(ItemEvent e) {
+
+			 if ( (e.getSource() == DISCONNECT)  &&
+                 (e.getStateChange() == ItemEvent.SELECTED) )
+				try {
+					rm.disconnect();
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			 if    ( (e.getSource() == CONNECT) &&
+                     (e.getStateChange() == ItemEvent.SELECTED) )
+				try {
+					rm.connect();
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+			}
+        }				
+ 	}
+
+ 	public static void main(String[] args) throws RemoteException{
+			
+		 RMIClient r = new RMIClient();		 
+   } 
+
+}
