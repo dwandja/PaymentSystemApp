@@ -1,0 +1,17 @@
+//RMI Interface
+
+import java.rmi.*; 
+
+public interface RMI extends Remote { 
+	
+	public boolean add(double d1, double d2, String loc1) throws RemoteException;
+	
+	public boolean delete(double d1, double d2, String loc2) throws RemoteException;
+	
+	public String [] createReport() throws RemoteException;
+	
+	public  boolean connect() throws RemoteException;
+	
+	public boolean disconnect() throws RemoteException;
+
+}
