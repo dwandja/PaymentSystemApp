@@ -1,0 +1,33 @@
+//Server returns a message to the client
+
+import java.rmi.*;
+import java.rmi.server.*;
+
+
+public class RMIServer {
+	
+	public static void main(String[] args) {
+	
+	  try {
+		   System.out.println( "Starting a server..." );
+
+		    RMIImpl p1 = new RMIImpl("hello");
+		  
+		    System.out.println( "Binding remote objects to rmi registry" );
+            		
+	        Naming.rebind( "rmi://localhost:6666/bj", p1 );   // <name, reference>
+	                                                          // e.g.("toaster",p1)
+
+		    System.out.println( "These remote objects are waiting for clients..." );
+	      }
+
+	      catch( Exception e ) {
+		                        System.out.println( "Error: " + e );
+	      }
+
+	      System.out.println( "... bye bye" );
+	      System.out.println( "... the main thread is put into a wait state!!!" );
+
+	      /* a separate thread is started after a remote object has been created */
+	   }
+}
