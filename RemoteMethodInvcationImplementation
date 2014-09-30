@@ -1,0 +1,167 @@
+//Defines RMI Interface functions
+
+import java.rmi.*;
+import java.rmi.server.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.net.*;
+import java.io.*;
+import java.sql.*; 
+import java.util.ArrayList;
+
+
+public class RMIImpl extends UnicastRemoteObject implements RMI {
+	
+	static final String drivername= "com.mysql.jdbc.Driver"; 
+	static final String sysName = "localhost"; 
+	static final String dbName  = "mydb"; 
+	static final String userid =  "root" ; 
+	static final String password = "xxxxx";
+	private Connection conn;
+	private ArrayList<String> str;
+	private String request;
+	private int count;
+	
+	//Constructor
+	public RMIImpl(String s) throws RemoteException   {		
+		request=s;
+	}	
+	
+	//Add remote method
+    public boolean add(double d1, double d2, String loc) throws RemoteException  
+    {
+    	boolean flag= false; 
+    	
+    	try{ 
+    		System.out.println(d1 + d2 + loc);
+    		Statement stat1= conn.createStatement();
+    		count=stat1.executeUpdate("INSERT INTO Location VALUES('"+ (d1) +"','"+(d2)+"','"+ (loc) +"' )");
+    		ResultSet rs = stat1.executeQuery( "SELECT * FROM Location" );		
+    		while ( rs.next() ) {
+            	System.out.println("X-Coordinate:" + rs.getDouble(1) + "\n\n" + "Y-Coordinate:" + rs.getInt(2) + "\n\n" + "Location name: " + rs.getString(1) );
+			}  		
+    		flag= true;
+	 		rs.close();   // close the ResultSet object
+	 		stat1.close(); // close the Statement object 		
+        }
+        catch ( SQLException exc )
+        {
+           System.out.println( " query failed with: " + exc.getMessage() );     
+        }  	
+    	return flag;   	
+    }
+	
+	public boolean delete(double d1, double d2, String loc) throws RemoteException
+	{
+		boolean flag= false; 
+    	
+    	try{
+    		System.out.println(d1 + d2 + loc);
+    		Statement stat2= conn.createStatement();
+    		stat2.executeUpdate( "DELETE FROM Location WHERE Address='"+ (loc)+"' and X='" +(d1)+ "' and Y='"+(loc) +"'");
+    		ResultSet rs = stat2.executeQuery( "SELECT * FROM Location" );
+    		while ( rs.next() ) {
+            	System.out.println( "Location name: " + rs.getString(1) );
+			}   		
+    		flag= true;
+	 		rs.close();   // close the ResultSet object
+	 		stat2.close(); // close the Statement object 		 		
+        }
+        catch ( SQLException exc )
+        {
+           System.out.println( " query failed with: " + exc.getMessage() );     
+        }   	
+    	return flag;		
+		
+	}
+	
+	public String[] createReport() throws RemoteException
+	{	
+           try {
+        	   
+    		Statement stat3= conn.createStatement();
+    		ResultSet rs = stat3.executeQuery( "SELECT * FROM Location" );
+    		str= new ArrayList<String>();
+    		
+    		while (rs.next() ) {
+    			
+    			str.add( rs.getString("X")+ "\t" +rs.getString("Y")+"\t" +rs.getString("Address")+"\n");		
+            	System.out.println( "Location name: " + rs.getString(1) );
+			}
+	 		rs.close();   // close the ResultSet object
+	 		stat3.close(); // close the Statement object 		
+        }
+        catch ( SQLException exc )
+        {
+           System.out.println( " query failed with: " + exc.getMessage() );     
+        }				
+		   String [] array= new String[str.size()+1]; 
+		   str.toArray(array);
+		   return array;
+	}
+		
+	public  boolean connect() throws RemoteException
+	
+	{
+		boolean flag= false;		
+	 	try {
+	           Class.forName(drivername);  }
+	   catch( ClassNotFoundException ec) { ec.printStackTrace();
+	                                       System.out.println( "MySQL JDBC driver not found!" );
+					                       System.exit(1);
+					                       flag= false;
+					                     }
+        System.out.println("JDBC class found");       
+        System.out.println( "Connecting to the MySQL server: " + sysName + "...");
+         
+         try
+          {
+	  		/* Step 2: connect to the database
+		     		   datasbase URL:
+			   		   jdbc:<subprotocol>:<system url>/<collection name> */
+
+       conn = DriverManager.getConnection( "jdbc:mysql:" +
+					      					  "//" + sysName +
+                                          "/"  + dbName,
+                                          userid, password
+                                        );
+            flag= true;
+			System.out.println("Success");
+			
+    }
+    catch ( SQLException exc )  /* SQLException */
+    {
+      System.out.println( "connection failed with: " +
+                          exc.getMessage() );
+    }
+
+    //System.out.println( "database connection-OK" );
+	
+    try {
+        // SQL statements: create a table and insert data
+     	Statement stat = conn.createStatement();
+     	stat.executeUpdate( "CREATE TABLE Location (X FLOAT(10) , Y FLOAT(10), Address VARCHAR(50))" ); 
+     	
+     	flag= true;  	
+     }
+    catch ( SQLException exc )
+     {
+       System.out.println( " query failed with: " + exc.getMessage() ); 
+	   flag= false; 
+     }	     
+     return flag;	
+	}
+	
+	
+	public boolean disconnect() throws RemoteException
+	{
+	  	boolean flag= false;		
+		try { if (conn != null )
+			 conn.close(); // close the database connection
+		     flag= true; 
+		
+		    }
+       catch (SQLException se ) { se.printStackTrace(); }	
+			return flag;			
+	}    				
+}
