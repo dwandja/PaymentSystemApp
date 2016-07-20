@@ -1,122 +1,128 @@
 //Employee Class
-
 package btp400.part1;
 
 import java.math.*;
 import java.text.*;
 import java.util.*;
 
-
 public class Employee {
-	
-	private String name;
-	private String address;
-	private double salary;
-	
-	public Employee(){
-		
-		this.name=null;
-		this.address=null;
-		this.salary=0.0;
-	}
-	
-	public void setName(String name){ 
-		
-		if(name==null) this.name=null;
-		else
-		this.name=name;	}
-	
-	
-	public void setAddress(String address){
-		
-		if(address==null) this.address=null;
-		else
-		this.address=address;}
-	
-	
-	public void setSalary(double salary){ 
-		
-		if(salary<0) this.salary=0.0;
-		else {
-		BigDecimal salar= new BigDecimal(salary);
-		salar=salar.setScale(2, BigDecimal.ROUND_HALF_UP);
-		NumberFormat n= NumberFormat.getCurrencyInstance(Locale.CANADA);
-	  double money= salar.doubleValue();
-	  //   String s= n.format(money);
-	  this.salary=money;
-  	//    System.out.println(s);
-	    }
-	}
-	
-	public String getName(){ return this.name;}
-	
-	public String getAddress(){ return this.address;}
-      
-	public double getSalary(){ return this.salary;}
-	
-	public double getPay(){
-		
-		if(salary<0) this.salary=0.00;
-		else {
-		BigDecimal salar= new BigDecimal(salary);
-		salar=salar.setScale(2, BigDecimal.ROUND_HALF_UP);
-		NumberFormat n= NumberFormat.getCurrencyInstance(Locale.CANADA);
-	  double money= salar.doubleValue();
-	    //String s= n.format(money);
-	    this.salary=money;
-	    
-	    return this.salary;}  
-				
-		return this.salary;
-				
-		}
-	
-	
-	public Employee (String name, String address, double salary){
-	
-	  setName(name);
-	  setAddress(address);
-	  setSalary(salary);
+
+    private String name;
+    private String address;
+    private double salary;
+
+    public Employee() {
+
+        this.name = null;
+        this.address = null;
+        this.salary = 0.0;
+    }
+
+    public void setName(String name) {
+
+        if (name == null) {
+            this.name = null;
+        } else {
+            this.name = name;
+        }
+    }
+
+    public void setAddress(String address) {
+
+        if (address == null) {
+            this.address = null;
+        } else {
+            this.address = address;
+        }
+    }
+
+    public void setSalary(double salary) {
+
+        if (salary < 0) {
+            this.salary = 0.0;
+        } else {
+            BigDecimal salar = new BigDecimal(salary);
+            salar = salar.setScale(2, BigDecimal.ROUND_HALF_UP);
+            NumberFormat n = NumberFormat.getCurrencyInstance(Locale.CANADA);
+            double money = salar.doubleValue();
+            //   String s= n.format(money);
+            this.salary = money;
+            //    System.out.println(s);
+        }
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getAddress() {
+        return this.address;
+    }
+
+    public double getSalary() {
+        return this.salary;
+    }
+
+    public double getPay() {
+
+        if (salary < 0) {
+            this.salary = 0.00;
+        } else {
+            BigDecimal salar = new BigDecimal(salary);
+            salar = salar.setScale(2, BigDecimal.ROUND_HALF_UP);
+            NumberFormat n = NumberFormat.getCurrencyInstance(Locale.CANADA);
+            double money = salar.doubleValue();
+            //String s= n.format(money);
+            this.salary = money;
+
+            return this.salary;
+        }
+
+        return this.salary;
+
+    }
+
+    public Employee(String name, String address, double salary) {
+
+        setName(name);
+        setAddress(address);
+        setSalary(salary);
+    }
+
+    public String toString() {
+
+        String s;
+
+        s = "##############################\n"
+                + "#  EMPLOYEE INFORMATION      #\n"
+                + "##############################\n"
+                + "Name:" + getName() + "\n"
+                + "Address:" + getAddress() + "\n"
+                + "Salary :" + "$" + getSalary() + "\n" + "\n\n";
+
+        return s;
+
+    }
+
+    public boolean equals(Object s) {
+
+        boolean result = false;
+        if (s instanceof Employee) {
+
+            Employee s1 = (Employee) s;
+
+            if (s1.getName() != null && s1.getAddress() != null) {
+
+                if (s1.getName().equals(getName()) && s1.getAddress().equals(getAddress())
+                        && s1.getSalary() == getSalary()) {
+                    return true;
+                }
+
+            }
+        }
+
+        return result;
+
+    }
+
 }
-	
-	public String toString(){
-		
-		String s;
-		
-		s="##############################\n" +
-		  "#  EMPLOYEE INFORMATION      #\n" +
-		  "##############################\n" +
-		  "Name:" + getName() + "\n" +
-		  "Address:" + getAddress() + "\n" +
-		  "Salary :" + "$" + getSalary() + "\n" +  "\n\n";
-		
-		   return s;
-		  	
-		
-	}
-	
-	public boolean equals(Object s){
-		
-		boolean result=false;
-		if(s instanceof Employee){
-			
-			Employee s1=(Employee) s;
-			
-			if(s1.getName()!=null && s1.getAddress()!=null){
-				
-		        	if(s1.getName().equals(getName()) && s1.getAddress().equals(getAddress())
-					&& s1.getSalary()==getSalary())
-				
-			         return true;
-			
-	                  	}
-			
-		}
-		
-		return result;
-		
-	}	
-	
-	
-}	
-	
