@@ -6,265 +6,230 @@ import java.sql.*;
 import java.io.*;
 import javax.swing.*;
 
-public class Exercise extends JFrame
-{
-	Connection conn;
-	private JTextField       tf1, tf2, tf3, tf4;
-	private JPasswordField   pf;
-	private JTextArea        ta1;
-	private JLabel           l1,l2,l3,l4, l5;
-	private JRadioButton     rb1,rb2;
-	private JButton 		 b3,b4,b5,b6;
+public class Exercise extends JFramea {
 
-	public Exercise()
-	{
-		tf1 = new JTextField("XXXXX",20);
-		pf = new JPasswordField("XXXXX", 20);
-		pf.getPassword();
-		pf.setEchoChar('*');
-		tf2 = new JTextField("",5);
-		tf3 = new JTextField("",5);
-		tf4 = new JTextField("",20);
+    Connection conn;
+    private JTextField tf1, tf2, tf3, tf4;
+    private JPasswordField pf;
+    private JTextArea ta1;
+    private JLabel l1, l2, l3, l4, l5;
+    private JRadioButton rb1, rb2;
+    private JButton b3, b4, b5, b6;
+    public Exercise() {
+        tf1 = new JTextField("XXXXX", 20);
+        pf = new JPasswordField("XXXXX", 20);
+        pf.getPassword();
+        pf.setEchoChar('*');
+        tf2 = new JTextField("", 5);
+        tf3 = new JTextField("", 5);
+        tf4 = new JTextField("", 20);
 
-		ta1 = new JTextArea("Please, click on Connect to connect to database!! \n",15,60);
-		l1 = new JLabel("Username");
-		l2 = new JLabel("Password");
-		l3 = new JLabel("X Coordinate");
-		l4 = new JLabel("Y Coordinate");
-		l5 = new JLabel("Address");
-		rb1 = new JRadioButton("Connect");
-		rb2 = new JRadioButton("Disconnect");
-		b3 = new JButton("Add");
-		b4 = new JButton("Delete");
-		b5 = new JButton("Create Report");
-		b6 = new JButton("Clear Report");
-		
-		ta1.setEditable(false);
-		
-		Container c = getContentPane();
-		c.setLayout( new FlowLayout() );
+        ta1 = new JTextArea("Please, click on Connect to connect to database!! \n", 15, 60);
+        l1 = new JLabel("Username");
+        l2 = new JLabel("Password");
+        l3 = new JLabel("X Coordinate");
+        l4 = new JLabel("Y Coordinate");
+        l5 = new JLabel("Address");
+        rb1 = new JRadioButton("Connect");
+        rb2 = new JRadioButton("Disconnect");
+        b3 = new JButton("Add");
+        b4 = new JButton("Delete");
+        b5 = new JButton("Create Report");
+        b6 = new JButton("Clear Report");
 
-		c.add( l1 );     
-		c.add( tf1 );
-		c.add( l2 ); 
-		c.add( pf );
-		c.add( rb1 );
-		c.add( rb2 );		
-		c.add( l3);     
-		c.add( tf2 );
-		c.add( l4 ); 
-		c.add( tf3 );
-		c.add( l5 );
-		c.add( tf4 );
-		c.add( b3 );
-		c.add( b4 );	
-		c.add( new JScrollPane( ta1 ));
-		c.add( b5 );
-		c.add( b6 );
-	
-		rb1.addActionListener(new ConnectDB());
-		rb2.addActionListener(new DisconnectDB());
-		b3.addActionListener(new Add());
-		b4.addActionListener(new Delete());
-		b5.addActionListener(new CreateReport());
-		b6.addActionListener(new ClearReport());
-		
-	} //end GuiExercise_W10()
- 
- //connect radio button class
-	class ConnectDB implements ActionListener
-	{
-		public void actionPerformed(ActionEvent e)
-		{
-			try
-			{	
-				if(rb1.isSelected())
-				{
-					rb2.setSelected(false); //unchecked disconnect radio button
-					Class.forName("com.mysql.jdbc.Driver");
-					conn = DriverManager.getConnection("jdbc:mysql://zenit.senecac.on.ca/XXXXX",tf1.getText(), pf.getText());
-				
-					System.out.println("Database: "+ tf1.getText() + " Connected!\n");
-					System.out.println("Please, enter address and X & Y coordinate and click on add or delete to modify database\n");
-					System.out.println("At any time click on Create Report to see the database content\n");
-					ta1.append("\nDatabase: " + tf1.getText() + " Connected!!\n");
-					ta1.append("Please, enter address and X & Y coordinate and click on add or delete to modify database\n");
-					ta1.append("At any time click on Create Report to see the database content\n");
-				}
-			}
-			catch(ClassNotFoundException e1)
-			{
-				System.out.println("MySQL JDBC Driver not found!! "+ e1 + "\n");
-				ta1.append("MySQL JDBC Driver not found!! "+ e1 + "\n");
-			}
-			catch(Exception e2)
-			{
-				System.out.println("Connection Error!! " + e2 + "\n");
-				ta1.append("Connection Error!! " + e2 + "\n");
-			}
-		}
-	}
+        ta1.setEditable(false);
+
+        Container c = getContentPane();
+        c.setLayout(new FlowLayout());
+
+        c.add(l1);
+        c.add(tf1);
+        c.add(l2);
+        c.add(pf);
+        c.add(rb1);
+        c.add(rb2);
+        c.add(l3);
+        c.add(tf2);
+        c.add(l4);
+        c.add(tf3);
+        c.add(l5);
+        c.add(tf4);
+        c.add(b3);
+        c.add(b4);
+        c.add(new JScrollPane(ta1));
+        c.add(b5);
+        c.add(b6);
+
+        rb1.addActionListener(new ConnectDB());
+        rb2.addActionListener(new DisconnectDB());
+        b3.addActionListener(new Add());
+        b4.addActionListener(new Delete());
+        b5.addActionListener(new CreateReport());
+        b6.addActionListener(new ClearReport());
+
+    } //end GuiExercise_W10()
+
+    //connect radio button class
+    class ConnectDB implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            try {
+                if (rb1.isSelected()) {
+                    rb2.setSelected(false); //unchecked disconnect radio button
+                    Class.forName("com.mysql.jdbc.Driver");
+                    conn = DriverManager.getConnection("jdbc:mysql://zenit.senecac.on.ca/XXXXX", tf1.getText(), pf.getText());
+
+                    System.out.println("Database: " + tf1.getText() + " Connected!\n");
+                    System.out.println("Please, enter address and X & Y coordinate and click on add or delete to modify database\n");
+                    System.out.println("At any time click on Create Report to see the database content\n");
+                    ta1.append("\nDatabase: " + tf1.getText() + " Connected!!\n");
+                    ta1.append("Please, enter address and X & Y coordinate and click on add or delete to modify database\n");
+                    ta1.append("At any time click on Create Report to see the database content\n");
+                }
+            } catch (ClassNotFoundException e1) {
+                System.out.println("MySQL JDBC Driver not found!! " + e1 + "\n");
+                ta1.append("MySQL JDBC Driver not found!! " + e1 + "\n");
+            } catch (Exception e2) {
+                System.out.println("Connection Error!! " + e2 + "\n");
+                ta1.append("Connection Error!! " + e2 + "\n");
+            }
+        }
+    }
 
 //disconnect radio button class
-	class DisconnectDB implements ActionListener
-	{
-		public void actionPerformed(ActionEvent e)
-		{				
-			if(conn != null)
-			{
-				try
-				{
-					if(rb2.isSelected())
-					{
-						rb1.setSelected(false); //unchecked connect radio button 
-						conn.close();
-					
-						System.out.println("\nDatabase: "+ tf1.getText() + " Disconnected Succeeded!!\n");
-						ta1.append("\nDatabase: "+ tf1.getText() + " Disconnected!!\n");
-					}
-				}
-				catch(Exception e1)
-				{
-					System.out.println("Disconnection Error!! " + e1 +"\n");
-					ta1.setText("Disconnection Error!! " + e1 + "\n");
-				}
-			}
+    class DisconnectDB implements ActionListener {
 
-		}
-	}
+        public void actionPerformed(ActionEvent e) {
+            if (conn != null) {
+                try {
+                    if (rb2.isSelected()) {
+                        rb1.setSelected(false); //unchecked connect radio button 
+                        conn.close();
+
+                        System.out.println("\nDatabase: " + tf1.getText() + " Disconnected Succeeded!!\n");
+                        ta1.append("\nDatabase: " + tf1.getText() + " Disconnected!!\n");
+                    }
+                } catch (Exception e1) {
+                    System.out.println("Disconnection Error!! " + e1 + "\n");
+                    ta1.setText("Disconnection Error!! " + e1 + "\n");
+                }
+            }
+
+        }
+    }
 
 //add button class
-	class Add implements ActionListener
-	{
-		public void actionPerformed(ActionEvent e)
-		{
-			try
-			{
-				Statement stmt=conn.createStatement();
-				String cX = tf2.getText();
-				String cY = tf3.getText();
-				String address = tf4.getText();
-				double x = Double.parseDouble(cX);
-				double y = Double.parseDouble(cY);
-				String sql = "INSERT INTO LOCATION values('"+(x)+"','"+(y)+"','"+(address)+"') ";
-				int rows = stmt.executeUpdate(sql);
-				tf2.setText("");
-				tf3.setText("");
-				tf4.setText("");
-								
-				System.out.println("\n"+rows+ " row inserted \n");
-				ta1.append("\n"+rows+ " row inserted \n");
-			}
-			catch(NumberFormatException e1)
-			{
-				System.out.println("Error! " + e1 + "\n");
-				ta1.append("Error! "+ e1 + "\n");
-			}
-			catch(Exception e2)
-			{
-				System.out.println("Error!! " + e2 + "\n");
-				ta1.append("Error!! " + e2 + "\n");
-			}			
-		}
-	}
+    class Add implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            try {
+                Statement stmt = conn.createStatement();
+                String cX = tf2.getText();
+                String cY = tf3.getText();
+                String address = tf4.getText();
+                double x = Double.parseDouble(cX);
+                double y = Double.parseDouble(cY);
+                String sql = "INSERT INTO LOCATION values('" + (x) + "','" + (y) + "','" + (address) + "') ";
+                int rows = stmt.executeUpdate(sql);
+                tf2.setText("");
+                tf3.setText("");
+                tf4.setText("");
+
+                System.out.println("\n" + rows + " row inserted \n");
+                ta1.append("\n" + rows + " row inserted \n");
+            } catch (NumberFormatException e1) {
+                System.out.println("Error! " + e1 + "\n");
+                ta1.append("Error! " + e1 + "\n");
+            } catch (Exception e2) {
+                System.out.println("Error!! " + e2 + "\n");
+                ta1.append("Error!! " + e2 + "\n");
+            }
+        }
+    }
 
 //delete button class	
-	class Delete implements ActionListener
-	{
-		public void actionPerformed(ActionEvent e)
-		{
-			try
-			{
-				Statement stmt=conn.createStatement();
-				String cX = tf2.getText();
-				String cY = tf3.getText();
-				String address = tf4.getText();
-				double x = Double.parseDouble(cX);
-				double y = Double.parseDouble(cY);
-				String sql ="DELETE FROM LOCATION where x = '"+(x)+ "' and y = '" +(y)+ "' and address = '"+(address) +"' ";				
-				int rows = stmt.executeUpdate(sql);
-				tf2.setText("");
-				tf3.setText("");
-				tf4.setText("");
-				
-				System.out.println("\n" + rows + " row(s) deleted\n");
-				ta1.append("\n" + rows + " row(s) deleted\n");		
-			}
-			catch(NumberFormatException e1)
-			{
-				System.out.println("Error! " + e1 + "\n");
-				ta1.append("Error! " + e1 + "\n");
-			}
-			catch(Exception e2)
-			{
-					System.out.println("Error!! " + e2 + "\n");
-					ta1.append("Error!! " + e2 + "\n");
-			}	
-		}
-	}
-	
+    class Delete implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            try {
+                Statement stmt = conn.createStatement();
+                String cX = tf2.getText();
+                String cY = tf3.getText();
+                String address = tf4.getText();
+                double x = Double.parseDouble(cX);
+                double y = Double.parseDouble(cY);
+                String sql = "DELETE FROM LOCATION where x = '" + (x) + "' and y = '" + (y) + "' and address = '" + (address) + "' ";
+                int rows = stmt.executeUpdate(sql);
+                tf2.setText("");
+                tf3.setText("");
+                tf4.setText("");
+
+                System.out.println("\n" + rows + " row(s) deleted\n");
+                ta1.append("\n" + rows + " row(s) deleted\n");
+            } catch (NumberFormatException e1) {
+                System.out.println("Error! " + e1 + "\n");
+                ta1.append("Error! " + e1 + "\n");
+            } catch (Exception e2) {
+                System.out.println("Error!! " + e2 + "\n");
+                ta1.append("Error!! " + e2 + "\n");
+            }
+        }
+    }
+
 //createReport class	
-	class CreateReport implements ActionListener
-	{
-		public void actionPerformed(ActionEvent e)
-		{
-			try
-			{
-				Statement stmt = conn.createStatement();
-				String sql = "SELECT * FROM LOCATION";
-				boolean more;
-				int count =0;
-				ResultSet rs = stmt.executeQuery(sql);
-				more = rs.next();
-				tf2.setText("");
-				tf3.setText("");
-				tf4.setText("");
-				
-				if(!more)
-				{
-					System.out.println("No data in the table \n");
-					ta1.append("No data in the table \n");
-					return;
-				}
-					System.out.println("Report Created!!\n");
-					ta1.append("\n\tLOCATION REPORT\n");
-					ta1.append("\n\tX\tY\tAddress\n");
-					ta1.append("\t----------------------------------------------------------------------");
-						
-					while(more)
-					{
-						ta1.append("\n\t"+rs.getString("x")+"\t"+rs.getString("y")+"\t"+rs.getString("address")+"\n");
-						count++;
-						more=rs.next();
-					}		
-					ta1.append("\n\t----------------------------------------------------------------------");
-					ta1.append("\n\t" + count + " rows selected\n");
-					rs.close();
-					stmt.close();
-			}
-			catch(Exception e1)
-			{
-				System.out.println("Error!!" + e1 + "\n");
-				ta1.append("Error!!" + e1 + "\n");
-			}
-		}
-	}
+    class CreateReport implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            try {
+                Statement stmt = conn.createStatement();
+                String sql = "SELECT * FROM LOCATION";
+                boolean more;
+                int count = 0;
+                ResultSet rs = stmt.executeQuery(sql);
+                more = rs.next();
+                tf2.setText("");
+                tf3.setText("");
+                tf4.setText("");
+
+                if (!more) {
+                    System.out.println("No data in the table \n");
+                    ta1.append("No data in the table \n");
+                    return;
+                }
+                System.out.println("Report Created!!\n");
+                ta1.append("\n\tLOCATION REPORT\n");
+                ta1.append("\n\tX\tY\tAddress\n");
+                ta1.append("\t----------------------------------------------------------------------");
+
+                while (more) {
+                    ta1.append("\n\t" + rs.getString("x") + "\t" + rs.getString("y") + "\t" + rs.getString("address") + "\n");
+                    count++;
+                    more = rs.next();
+                }
+                ta1.append("\n\t----------------------------------------------------------------------");
+                ta1.append("\n\t" + count + " rows selected\n");
+                rs.close();
+                stmt.close();
+            } catch (Exception e1) {
+                System.out.println("Error!!" + e1 + "\n");
+                ta1.append("Error!!" + e1 + "\n");
+            }
+        }
+    }
 
 //clear report screen
-	class ClearReport implements ActionListener
-	{
-		public void actionPerformed(ActionEvent e)
-		{
-			ta1.setText("");
-		}
-	}
-	
- // invoke the GUI program
-	public static void main(String[] args)
-	{
-		Exercise c = new Exercise();
-		c.setVisible(true);
-		c.setSize(800,400);
-		c.setDefaultCloseOperation( EXIT_ON_CLOSE );
-	}
+    class ClearReport implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            ta1.setText("");
+        }
+    }
+
+    // invoke the GUI program
+    public static void main(String[] args) {
+        Exercise c = new Exercise();
+        c.setVisible(true);
+        c.setSize(800, 400);
+        c.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
 }
