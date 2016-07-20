@@ -38,8 +38,7 @@ public class RMIClient extends JFrame {
     private String cx;
     private String cz;
     private int count=0;
-    
-	
+   
 	public RMIClient() throws RemoteException{
 		
         super("Request Form");
@@ -79,7 +78,6 @@ public class RMIClient extends JFrame {
 		jp1.add(_pf);
 		jp1.add(CONNECT);
 		jp1.add(DISCONNECT);
-		
 		JPanel jp2= new JPanel();
 		jp2.add(_l3);
 		jp2.add(_tf2);
@@ -89,15 +87,12 @@ public class RMIClient extends JFrame {
 		jp2.add(_tf4);
 		//jp2.add(_label);
 		//jp2.add(_txtarea);	
-		
 		JPanel jp3= new JPanel();
 		jp3.add(ADD);
 		jp3.add(DELETE);
 		jp3.add(REPORT);
 		jp3.add(CLEAR);
-		
 		Container c= getContentPane();
-		
 		c.setLayout( new FlowLayout());
 		c.add(jp1);
 		c.add(jp2);
@@ -107,8 +102,6 @@ public class RMIClient extends JFrame {
 		setVisible(true);
 		setDefaultCloseOperation( EXIT_ON_CLOSE );
 	}
- 	
- 		
  	public void RegisterListener() throws RemoteException{
 	
  		String url= "rmi://localhost:6666/";	
@@ -171,7 +164,6 @@ public class RMIClient extends JFrame {
 	      });
 	      
 	      //REPORT Button ActionListener
-	      
 	       REPORT.addActionListener( new ActionListener()
 	      {
 	    	 public void actionPerformed(ActionEvent e)
