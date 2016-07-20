@@ -1,197 +1,149 @@
 //Manager Class
-
 package btp400.part3;
-import  btp400.part1.Employee;
-import  btp400.part2.Programmer;
+
+import btp400.part1.Employee;
+import btp400.part2.Programmer;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.*;
 
 public class Manager extends Employee {
-	
-	private double basebonus;
-	private ArrayList<Programmer> programmers;
-	
-	
-	public Manager()
-	{
-		super();
-		this.basebonus=0.00;
-		this.programmers= new ArrayList<Programmer>();
-	}
-	
-	
-	public Manager(String name, String address, double salary, double basebonus)
-	
-	{
-		super(name, address, salary);
-		if(basebonus<0) this.basebonus=0.00;
-		else
-		this.basebonus=basebonus;
-		programmers= new ArrayList<Programmer>();			
-	}
 
-		
-		
-		public boolean supervise(Programmer pgr)
-		{
-		boolean done= true;
-		
-		if( programmers.contains(pgr) || pgr==null)
-		{
-			done= false;	
-		}
-		
-		else
-		{
-			
-		programmers.add(pgr);
-		
-		}
-		  return done;
-	}
-		
-	
-	public double getBaseBonus()
-	
-	{
-		
-		if(basebonus<0) this.basebonus=0.00;
-		else {
-		BigDecimal salar= new BigDecimal(basebonus);
-		salar=salar.setScale(2, BigDecimal.ROUND_HALF_UP);
-		NumberFormat n= NumberFormat.getCurrencyInstance(Locale.CANADA);
-	  double money= salar.doubleValue();
-	  //String s= n.format(money);
-	  this.basebonus=money;
-	    
-	    return this.basebonus;}  
-				
-		return this.basebonus;
-	
-		
-		
-		//return this.basebonus;	
-	}
-	
-	
-	public double getBonusPay()
-	
-	{   
-	   int count=0;	
-	    
-	    if(programmers!=null){
-	    
-		for(Programmer number : programmers)
-			
-		{
-			if(number!=null && number.getOvertimePay() > 0.00 )
-			 {
-			    count++;		
-		  	}					
-		}  
-					
-	  }
-	    
-		if(count>100) return 0.00;
-			
-		else
-			
-		{
-			
-			double ds= basebonus*(1-0.01*count);
-			
-			if(ds<0) ds=0.00;
-			else {
-			BigDecimal salar= new BigDecimal(ds);
-			salar=salar.setScale(2, BigDecimal.ROUND_HALF_UP);
-			NumberFormat n= NumberFormat.getCurrencyInstance(Locale.CANADA);
-		  double money= salar.doubleValue();
-		  ds=money;
-		    
-		    return ds;}  					
-			return ds;								
-			
-		}
-		
-	}
-		
-	public double getPay()
-	
-	{	
-		
-		if(this.getSalary()<0) this.setSalary(0.00);
-		else {
-		BigDecimal salar= new BigDecimal(this.getSalary());
-		salar=salar.setScale(2, BigDecimal.ROUND_HALF_UP);
-		NumberFormat n= NumberFormat.getCurrencyInstance(Locale.CANADA);
-	  double money= salar.doubleValue();
-	  String s= n.format(money);
-	  this.setSalary(money);
-	    
-	    return this.getSalary() + this.getBonusPay(); }  
-				
-		return this.getSalary() + this.getBonusPay();	
-		
-	}
-		
+    private double basebonus;
+    private ArrayList<Programmer> programmers;
 
-	public String toString()
-	
-	{	 		
-	
-	 int m= programmers.size();	
-	
-	 String s= getName() + " " + "supervises" + " " + m + " " + "Programmers\n";	
-	        s+= "BaseBonus:" + "$" + getBaseBonus() + "\n" + 
-	            "Bonus Pay:" + "$" + getBonusPay() + "\n" +
-	        	"Payment:"   + "$" + getPay() + "\n" ;
-	        
-	        
-	 for( int k=0; k<m; k++){
-	    	    	
-	    Programmer prog= programmers.get(k);
-	    	
-	    s+= prog;	    		
-	 
-   	} 	
-	 
-    	return s;			 	
-	 
-	}
-			
-	
-	public boolean equals( Object s)
-	
-	{
-		boolean result=false;
-		if(s instanceof Manager){
-			
-			Manager s1=(Manager) s;
-			
-			if(s1.getName()!=null && s1.getAddress()!=null && s1.programmers!= null){
-				
-		        	if(s1.getName().equals(getName()) && s1.getAddress().equals(getAddress())
-					&& s1.getSalary()==getSalary() && s1.getBaseBonus()==getBaseBonus() && s1.programmers.equals(programmers))
-				
-			         return true;		                  	}						
-		}
-		
-		return result;							
-	}
-	
-		
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+    public Manager() {
+        super();
+        this.basebonus = 0.00;
+        this.programmers = new ArrayList<Programmer>();
+    }
 
+    public Manager(String name, String address, double salary, double basebonus) {
+        super(name, address, salary);
+        if (basebonus < 0) {
+            this.basebonus = 0.00;
+        } else {
+            this.basebonus = basebonus;
+        }
+        programmers = new ArrayList<Programmer>();
+    }
 
+    public boolean supervise(Programmer pgr) {
+        boolean done = true;
+
+        if (programmers.contains(pgr) || pgr == null) {
+            done = false;
+        } else {
+
+            programmers.add(pgr);
+
+        }
+        return done;
+    }
+
+    public double getBaseBonus() {
+
+        if (basebonus < 0) {
+            this.basebonus = 0.00;
+        } else {
+            BigDecimal salar = new BigDecimal(basebonus);
+            salar = salar.setScale(2, BigDecimal.ROUND_HALF_UP);
+            NumberFormat n = NumberFormat.getCurrencyInstance(Locale.CANADA);
+            double money = salar.doubleValue();
+            //String s= n.format(money);
+            this.basebonus = money;
+
+            return this.basebonus;
+        }
+
+        return this.basebonus;
+
+        //return this.basebonus;	
+    }
+
+    public double getBonusPay() {
+        int count = 0;
+
+        if (programmers != null) {
+
+            for (Programmer number : programmers) {
+                if (number != null && number.getOvertimePay() > 0.00) {
+                    count++;
+                }
+            }
+        }
+        if (count > 100) {
+            return 0.00;
+        } else {
+
+            double ds = basebonus * (1 - 0.01 * count);
+
+            if (ds < 0) {
+                ds = 0.00;
+            } else {
+                BigDecimal salar = new BigDecimal(ds);
+                salar = salar.setScale(2, BigDecimal.ROUND_HALF_UP);
+                NumberFormat n = NumberFormat.getCurrencyInstance(Locale.CANADA);
+                double money = salar.doubleValue();
+                ds = money;
+
+                return ds;
+            }
+            return ds;
+        }
+    }
+
+    public double getPay() {
+
+        if (this.getSalary() < 0) {
+            this.setSalary(0.00);
+        } else {
+            BigDecimal salar = new BigDecimal(this.getSalary());
+            salar = salar.setScale(2, BigDecimal.ROUND_HALF_UP);
+            NumberFormat n = NumberFormat.getCurrencyInstance(Locale.CANADA);
+            double money = salar.doubleValue();
+            String s = n.format(money);
+            this.setSalary(money);
+
+            return this.getSalary() + this.getBonusPay();
+        }
+        return this.getSalary() + this.getBonusPay();
+    }
+
+    public String toString() {
+
+        int m = programmers.size();
+
+        String s = getName() + " " + "supervises" + " " + m + " " + "Programmers\n";
+        s += "BaseBonus:" + "$" + getBaseBonus() + "\n"
+                + "Bonus Pay:" + "$" + getBonusPay() + "\n"
+                + "Payment:" + "$" + getPay() + "\n";
+
+        for (int k = 0; k < m; k++) {
+
+            Programmer prog = programmers.get(k);
+
+            s += prog;
+        }
+
+        return s;
+    }
+
+    public boolean equals(Object s) {
+        boolean result = false;
+        if (s instanceof Manager) {
+
+            Manager s1 = (Manager) s;
+
+            if (s1.getName() != null && s1.getAddress() != null && s1.programmers != null) {
+
+                if (s1.getName().equals(getName()) && s1.getAddress().equals(getAddress())
+                        && s1.getSalary() == getSalary() && s1.getBaseBonus() == getBaseBonus() && s1.programmers.equals(programmers)) {
+                    return true;
+                }
+            }
+        }
+        return result;
+    }
+}
