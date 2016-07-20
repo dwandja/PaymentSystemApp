@@ -1,121 +1,77 @@
 //Programmer Class
-
 package btp400.part2;
+
 import btp400.part1.*;
 
 public class Programmer extends Employee {
-	
-	private double overtimePay; 
 
-	public Programmer()
-	{
-		super();
-		this.overtimePay=0.00;
-	}
-	
-	public Programmer(String name, String address, double salary)
-	
-	{	
-		super(name, address, salary );
-		this.overtimePay=0.00;	
-	}
-	
-	
-	public boolean addOvertimePay( double ot)
-	{	
-		
-		boolean flag= true;		
-		double total;		
-		total = this.overtimePay + ot;		
-		if(total > this.getSalary()*0.5 || ot<0) 
-		{		
-			flag=false;
-		}
-		
-		else
-		{		 
-		     this.overtimePay += ot;
-		}
-			return flag;
-	}
-	
-	
-	
- 	public boolean setOvertimePay(double newOvertimePay)
-	
-	{  
-		boolean flag=true;
-		
-		if(newOvertimePay > this.getSalary()*0.5 || newOvertimePay<0)
-		
-		{
-			flag=false;
-			
-		}
-		
-		else
-		
-		{
-			this.overtimePay=newOvertimePay;			
-		}
-		    	return flag;
-	}	
-	
-    public double getOvertimePay()
-    
-    {
-    	return this.overtimePay;   	
+    private double overtimePay;
+    public Programmer() {
+        super();
+        this.overtimePay = 0.00;
     }
-    
-    public double getPay()
-	
-    {
-   	return getSalary() + this.overtimePay;
-    	
+
+    public Programmer(String name, String address, double salary) {
+        super(name, address, salary);
+        this.overtimePay = 0.00;
     }
-    
-    public String toString()
-    
-    {
-    	String s;
-    	
-    	s="#####################################\n" +   
-    	  "#      Programmer Information       #\n" +
-    	  "#####################################\n" + 
-    	  "Name:"        +  this.getName() + "\n" +
-    	  "Address:"     + 	this.getAddress() + "\n" +
-    	  "Base Salary:" + "$" + this.getSalary() + "\n" +
-    	  "OvertimePayment:" + this.getOvertimePay() + "\n" +
-    	  "TotalPay:"        + this.getPay() + "\n";
-    	
-    	
-    	return s;
-    	
+    public boolean addOvertimePay(double ot) {
+
+        boolean flag = true;
+        double total;
+        total = this.overtimePay + ot;
+        if (total > this.getSalary() * 0.5 || ot < 0) {
+            flag = false;
+        } else {
+            this.overtimePay += ot;
+        }
+        return flag;
     }
-    
-    
-    
-    public boolean equals(Object s)
-    
-    {	
-    	boolean result=false;
-    	
-		if(s instanceof Programmer){
-			
-			Programmer s1=(Programmer) s;
-			
-			if(s1.getName()!=null && s1.getAddress()!=null){
-				
-		        	if(s1.getName().equals(this.getName()) && s1.getAddress().equals(this.getAddress())
-					&& s1.getSalary()==this.getSalary() && s1.getPay()==(this.getPay()))
-				
-		        		return true;
-			
-			}				
-		}
-		
-		return result;  	
+    public boolean setOvertimePay(double newOvertimePay) {
+        boolean flag = true;
+
+        if (newOvertimePay > this.getSalary() * 0.5 || newOvertimePay < 0) {
+            flag = false;
+
+        } else {
+            this.overtimePay = newOvertimePay;
+        }
+        return flag;
     }
-    
-    
+
+    public double getOvertimePay() {
+        return this.overtimePay;
+    }
+
+    public double getPay() {
+        return getSalary() + this.overtimePay;
+    }
+
+    public String toString() {
+        String s;
+
+        s = "#####################################\n"
+                + "#      Programmer Information       #\n"
+                + "#####################################\n"
+                + "Name:" + this.getName() + "\n"
+                + "Address:" + this.getAddress() + "\n"
+                + "Base Salary:" + "$" + this.getSalary() + "\n"
+                + "OvertimePayment:" + this.getOvertimePay() + "\n"
+                + "TotalPay:" + this.getPay() + "\n";
+        return s;
+    }
+    public boolean equals(Object s) {
+        boolean result = false;
+        if (s instanceof Programmer) {
+            Programmer s1 = (Programmer) s;
+            if (s1.getName() != null && s1.getAddress() != null) {
+               if (s1.getName().equals(this.getName()) && s1.getAddress().equals(this.getAddress())
+                        && s1.getSalary() == this.getSalary() && s1.getPay() == (this.getPay())) {
+                    return true;
+                }
+            }
+        }
+        return result;
+    }
+
 }
