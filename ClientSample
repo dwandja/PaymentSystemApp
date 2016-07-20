@@ -1,83 +1,79 @@
 
 //Client sends a message to the server
-
 import java.net.*;
 import java.io.*;
 import java.util.*;
 
-public class SimpleClient{
+public class SimpleClient {
 
-   public static void main(String[] args) {
-	  boolean flag=true;
-	Socket clientSocket;		// TCP/IP socket
-	try {
-	     clientSocket = new Socket( InetAddress.getByName( "localhost" ), 8000 );
-	     DataOutputStream dosToServer = new DataOutputStream(clientSocket.getOutputStream() );
-	     DataInputStream  disFromServer= new DataInputStream(clientSocket.getInputStream() );
+    public static void main(String[] args) {
+        boolean flag = true;
+        Socket clientSocket;		// TCP/IP socket
+        try {
+            clientSocket = new Socket(InetAddress.getByName("localhost"), 8000);
+            DataOutputStream dosToServer = new DataOutputStream(clientSocket.getOutputStream());
+            DataInputStream disFromServer = new DataInputStream(clientSocket.getInputStream());
 
-         Scanner keyboard = new Scanner( System.in );
+            Scanner keyboard = new Scanner(System.in);
 
-         String msg = disFromServer.readUTF();
-         System.out.println("echo from the server:"+msg);
-         
-        while(flag==true){
-				try {   
-					//Write area
-		             System.out.print("Command>> ");
-		             String command = keyboard.nextLine();
-		             if(command.equals("thank you"))
-		             {
-		            	 System.out.println("The clients stops running");
-		            	 flag=false;
-		             }
-					 
-					 else if(!command.equals("area")){
-					 
-					      System.out.println("Please write Area");
-					 }
-					 
-					 else{
-		             dosToServer.writeUTF(command);
-		             dosToServer.flush();
-		             
-		             System.out.println(disFromServer.readUTF());
-		             
-		             //Rectangle 1.1 2.2
-		             System.out.print("Command>> ");
-		             
-		             command = keyboard.nextLine();
-		             if(!command.equals("thank you")){
-		             dosToServer.writeUTF(command);
-		             dosToServer.flush();
-		  
-		             System.out.println("echo from the server: "+disFromServer.readUTF());
-		             System.out.print(disFromServer.readUTF());
-		             System.out.printf("%.2f",disFromServer.readDouble());
-		             System.out.println();
-		             }					 
-					 else{flag=false;}
-		             }
-				}				
-				catch( EOFException eof ) { // loss of connection
+            String msg = disFromServer.readUTF();
+            System.out.println("echo from the server:" + msg);
 
-			    System.out.println( "The server has terminated connection!" ); }
+            while (flag == true) {
+                try {
+                    //Write area
+                    System.out.print("Command>> ");
+                    String command = keyboard.nextLine();
+                    if (command.equals("thank you")) {
+                        System.out.println("The clients stops running");
+                        flag = false;
+                    } else if (!command.equals("area")) {
 
-				catch(IOException e ) { System.out.println( "I/O errors in data exchange" );
-                                        e.printStackTrace(); 								}
-	     }
-              System.out.println( "Client: data exchange completed" );
+                        System.out.println("Please write Area");
+                    } else {
+                        dosToServer.writeUTF(command);
+                        dosToServer.flush();
 
-	     /* step 4: close the connection to the server
-              */
-	     System.out.println( "Client: closing the connection..." );
+                        System.out.println(disFromServer.readUTF());
 
-	     dosToServer.close();
-	     disFromServer.close();
-	     clientSocket.close();
-	}
-    catch( IOException ioe ) { System.out.println( "I/O errors in socket connection" );
-                               ioe.printStackTrace(); }
-    System.out.println( "... the client is going to stop running..." );
+                        //Rectangle 1.1 2.2
+                        System.out.print("Command>> ");
 
-   } // end main
+                        command = keyboard.nextLine();
+                        if (!command.equals("thank you")) {
+                            dosToServer.writeUTF(command);
+                            dosToServer.flush();
+
+                            System.out.println("echo from the server: " + disFromServer.readUTF());
+                            System.out.print(disFromServer.readUTF());
+                            System.out.printf("%.2f", disFromServer.readDouble());
+                            System.out.println();
+                        } else {
+                            flag = false;
+                        }
+                    }
+                } catch (EOFException eof) { // loss of connection
+
+                    System.out.println("The server has terminated connection!");
+                } catch (IOException e) {
+                    System.out.println("I/O errors in data exchange");
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("Client: data exchange completed");
+
+            /* step 4: close the connection to the server
+             */
+            System.out.println("Client: closing the connection...");
+
+            dosToServer.close();
+            disFromServer.close();
+            clientSocket.close();
+        } catch (IOException ioe) {
+            System.out.println("I/O errors in socket connection");
+            ioe.printStackTrace();
+        }
+        System.out.println("... the client is going to stop running...");
+
+    } // end main
 }
